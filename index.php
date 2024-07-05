@@ -8,24 +8,23 @@ error_reporting(E_ALL);
 
 // Include router Class
 require 'router.php';
-//include all your model files here
+// Include all your model files here
 require 'Model/Article.php';
-//include all your controllers here
+// Include all your controllers here
 require 'Controller/HomepageController.php';
 require 'Controller/ArticleController.php';
-//include routes
+// Include routes
 require 'routes.php';
 
-//get the http method of the request 
+// Get the HTTP method of the request 
 $method = $_SERVER['REQUEST_METHOD'];
-//get de uri of the request 
+// Get the URI of the request 
 $uri = $_SERVER['REQUEST_URI'];
 
-//parsea the URL 
-$parseedUrl = parse_url($uri);
-// remove ever slash 
-$path = trim($parseedUrl['path'], '/');
+// Parse the URL 
+$parsedUrl = parse_url($uri);
+// Remove any trailing slashes 
+$path = trim($parsedUrl['path'], '/');
 
-//handle the request using the router
-
-$router->handleRequest($method,$path);
+// Handle the request using the router
+$router->handleRequest($method, $path);

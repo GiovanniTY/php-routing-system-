@@ -4,31 +4,42 @@ class Router
 {
     private $routes = [];
 
-// Ajout d'une route avec méthode, modèle et rappel 
-public function addRoute($method, $pattern, $callback)  
+    // Add a route with method, pattern, and callback
+    public function addRoute($method, $pattern, $callback)
     {
         $this->routes[] = [
-            'method' => $method,  // Metode HTTP (GET, POST, etc.)
-            'pattern' => $pattern,  // Pattern de l URL
-            'callback' => $callback,  // Callback a executé quand la routes correspond
+            'method' => $method,  // HTTP method (GET, POST, etc.)
+            'pattern' => $pattern,  // URL pattern
+            'callback' => $callback,  // Callback to execute when the route matches
         ];
     }
 
-    // gere la requette
+    // Handle the request
     public function handleRequest($method, $uri)
     {
+        $matched = false;
+
         foreach ($this->routes as $route) {
-           // Vérifiez si la méthode et le modèle de route correspondent à la requête
+            // Check if the method and route pattern match the request
             if ($route['method'] === $method && preg_match($route['pattern'], $uri, $matches)) {
-                array_shift($matches); // Supprime la correspondance complète du résultat
-               // Exécute le rappel avec les paramètres extraits de l'URL
-                return call_user_func_array($route['callback'], $matches);
+                array_shift($matches); // Remove the full match from the result
+                // Execute the callback with the parameters extracted from the URL
+                call_user_func_array($route['callback'], $matches);
+                $matched = true;
+                break;
             }
         }
 
-        // Si aucune route ne correspond, renvoie une erreur 404
-        http_response_code(404);
-        echo "404 Not Found";
+        // If no route matches, redirect to the home page
+        if (!$matched) {
+            $this->redirectToHome();
+        }
+    }
+
+    private function redirectToHome()
+    {
+        // Redirect to the home page
+        header('Location: /');
+        exit();
     }
 }
-?>

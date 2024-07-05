@@ -1,20 +1,20 @@
 <?php
-$router = new Router ();
+$router = new Router();
 
-//Routes pour la home page
-
+// Routes for the home page
 $router->addRoute('GET', '/^$/', function () {
-    require 'View/home.php';
+    $controller = new HomepageController();
+    $controller->index();
 });
 
-//Routes pour les articles 
-$router->addRoute('GET','/^articles$/', function() {
+// Routes for articles
+$router->addRoute('GET', '/^articles$/', function () {
     $controller = new ArticleController();
     $controller->index();
 });
 
-//routes pour montrer les details d un article 
-$router->addRoute('GET','/^articles-show\/(\d+)$/', function($id) {
+// Routes to show the details of an article
+$router->addRoute('GET', '/^articles-show\/(\d+)$/', function ($id) {
     $controller = new ArticleController();
     $controller->show($id);
 });
